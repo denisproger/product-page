@@ -33,7 +33,9 @@ function ShopPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category') ?? 'all';
   const onlySale = searchParams.get('sale') === '1';
-  const sort = (searchParams.get('sort') ?? 'rating') as SortOption;
+  const sortParam = searchParams.get('sort');
+  // Unknown values (e.g. a mistyped link) fall back to the default, so the select never shows a blank option.
+  const sort: SortOption = SORT_OPTIONS.some((o) => o.id === sortParam) ? (sortParam as SortOption) : 'rating';
   const query = searchParams.get('q') ?? '';
 
   // Change one filter and keep the others. An empty value removes it from the URL.
@@ -52,7 +54,7 @@ function ShopPage() {
     .filter((p) => category === 'all' || p.category === category)
     .filter((p) => !onlySale || p.discountPercent > 0)
     .filter((p) => p.title.toLowerCase().includes(query.trim().toLowerCase()))
-    .toSorted(SORTERS[sort] ?? SORTERS.rating);
+    .toSorted(SORTERS[sort]);
 
   const hasFilters = category !== 'all' || onlySale || query !== '';
   const title = CATEGORIES.find((c) => c.id === category)?.name ?? 'All shoes';
