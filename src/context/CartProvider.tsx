@@ -34,7 +34,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Save the cart every time it changes, so it survives a page reload.
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // Storage full or blocked (e.g. some private modes): the cart still works for this visit.
+    }
   }, [items]);
 
   // Derived values: calculated from items, never stored separately.
