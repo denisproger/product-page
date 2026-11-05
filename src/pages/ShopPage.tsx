@@ -17,6 +17,13 @@ const SORT_OPTIONS: { id: SortOption; label: string }[] = [
 
 const finalPrice = (p: Product) => getFinalPrice(p.price, p.discountPercent);
 
+// Search by shoe name or colour name: "run", "orange", "navy"…
+function matchesSearch(product: Product, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (q === '') return true;
+  return product.title.toLowerCase().includes(q) || product.colors.some((c) => c.name.toLowerCase().includes(q));
+}
+
 // One compare function for each sort option (used with toSorted).
 const SORTERS: Record<SortOption, (a: Product, b: Product) => number> = {
   rating: (a, b) => getAverageRating(b) - getAverageRating(a),
@@ -53,7 +60,7 @@ function ShopPage() {
   const visibleProducts = products
     .filter((p) => category === 'all' || p.category === category)
     .filter((p) => !onlySale || p.discountPercent > 0)
-    .filter((p) => p.title.toLowerCase().includes(query.trim().toLowerCase()))
+    .filter((p) => matchesSearch(p, query))
     .toSorted(SORTERS[sort]);
 
   const hasFilters = category !== 'all' || onlySale || query !== '';
@@ -74,7 +81,7 @@ function ShopPage() {
               id="search"
               type="search"
               className="field__input"
-              placeholder="Shoe name…"
+              placeholder="Name or colour…"
               value={query}
               onChange={(e) => updateFilter('q', e.target.value)}
             />
