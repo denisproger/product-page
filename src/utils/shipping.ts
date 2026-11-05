@@ -1,4 +1,4 @@
-import { FREE_SHIPPING_FROM } from '../data/site';
+import { EXPRESS_SHIPPING_PRICE, FREE_SHIPPING_FROM, STANDARD_SHIPPING_PRICE } from '../data/site';
 
 export type DeliveryMethod = 'standard' | 'express';
 
@@ -9,6 +9,6 @@ export const DELIVERY_OPTIONS: { id: DeliveryMethod; name: string; time: string 
 
 // Standard is free from €150, otherwise €4.90. Express always costs €14.90.
 export function getShippingPrice(subtotal: number, method: DeliveryMethod): number {
-  if (method === 'express') return 14.9;
-  return subtotal >= FREE_SHIPPING_FROM ? 0 : 4.9;
+  if (method === 'express') return EXPRESS_SHIPPING_PRICE;
+  return subtotal >= FREE_SHIPPING_FROM ? 0 : STANDARD_SHIPPING_PRICE;
 }

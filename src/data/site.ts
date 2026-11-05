@@ -14,6 +14,8 @@ export const SHOP = {
 };
 
 export const FREE_SHIPPING_FROM = 150;
+export const STANDARD_SHIPPING_PRICE = 4.9;
+export const EXPRESS_SHIPPING_PRICE = 14.9;
 
 export const BENEFITS = [
   { icon: '🚚', title: 'Free shipping', text: `On all orders over €${FREE_SHIPPING_FROM}.` },
