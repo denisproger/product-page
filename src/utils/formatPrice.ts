@@ -9,6 +9,8 @@ export function getFinalPrice(price: number, discountPercent: number): number {
 }
 
 // "2026-09-14" → "14 Sep 2026"
+// "2026-09-14" is parsed as UTC midnight, so format it in UTC too.
+// Otherwise visitors west of UTC would see the previous day.
 export function formatDate(isoDate: string): string {
-  return new Date(isoDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  return new Date(isoDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 }
