@@ -5,10 +5,24 @@ import { CartContext } from './cartContext';
 
 const STORAGE_KEY = 'cart';
 
+function isCartItem(value: unknown): value is CartItem {
+  if (typeof value !== 'object' || value === null) return false;
+  const item = value as Record<string, unknown>;
+  return (
+    typeof item.key === 'string' &&
+    typeof item.productId === 'string' &&
+    typeof item.price === 'number' &&
+    typeof item.quantity === 'number' &&
+    item.quantity > 0
+  );
+}
+
 function loadCart(): CartItem[] {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? (JSON.parse(saved) as CartItem[]) : [];
+    const parsed: unknown = saved ? JSON.parse(saved) : [];
+    // Old or hand-edited data could be anything: keep only valid cart lines.
+    return Array.isArray(parsed) ? parsed.filter(isCartItem) : [];
   } catch {
     return []; // broken data or storage blocked: start with an empty cart
   }
@@ -20,7 +34,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Save the cart every time it changes, so it survives a page reload.
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // Storage full or blocked (e.g. some private modes): the cart still works for this visit.
+    }
   }, [items]);
 
   // Derived values: calculated from items, never stored separately.

@@ -1,5 +1,8 @@
 # Stride Co. — Sneaker Shop
 
+[![CI](https://github.com/denisproger/product-page/actions/workflows/ci.yml/badge.svg)](https://github.com/denisproger/product-page/actions/workflows/ci.yml)
+[![Deploy](https://github.com/denisproger/product-page/actions/workflows/deploy.yml/badge.svg)](https://github.com/denisproger/product-page/actions/workflows/deploy.yml)
+
 A multi-page sneaker shop built with **React 19, TypeScript, React Router and Vite**.
 
 **Live demo:** https://denisproger.github.io/product-page/
@@ -48,6 +51,8 @@ src/
 npm install
 npm run dev
 ```
+
+Checks: `npm run lint` and `npm run typecheck`
 
 Production build: `npm run build`
 

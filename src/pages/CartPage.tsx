@@ -48,7 +48,7 @@ function CartPage() {
                 <strong>🎉 You get free shipping!</strong>
               )}
             </p>
-            <div className="progress" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100}>
+            <div className="progress" role="progressbar" aria-label="Progress to free shipping" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100}>
               <div className="progress__bar" style={{ width: `${progress}%` }} />
             </div>
           </div>
